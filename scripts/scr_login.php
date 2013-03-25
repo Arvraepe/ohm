@@ -11,6 +11,8 @@
 	if($user != NULL && $user->password == md5($password.$user->salt)) {
 		$_SESSION['uid'] = $user->id;
 		$_SESSION['tid'] = $user->tid;
+		$team = SearchTeamById($user->tid);
+		$_SESSION['did'] = $team->did;
 		$_SESSION['username'] = $user->username;
 		header("location: ../index.php?p=dashboard");
 	} else {

@@ -23,6 +23,11 @@
                 // Session isn't set so we need to redirect to login page
                 header("location: index.php?p=login&redirect=".$page);
             }
+        } else {
+            if (isset($_SESSION['uid'])){           
+                // logged in tries to access page like login or registration... not for his eyes!
+                header("location: index.php");
+            }
         }
     }
 
@@ -85,10 +90,37 @@
     function SearchUserByUsername($username){
         $r = QUERY("SELECT * FROM `user` WHERE username = '".mysql_escape_string($username)."'");
         
-        if(count($r) >= 1)
+        if(count($r) > 0)
             return $r[0];
         
         return NULL;
+    }
+
+    function SearchTeamById($teamid){
+        $r = QUERY("SELECT * FROM `team` WHERE id = ".$teamid);
+
+        if(count($r) > 0)
+            return $r[0];
+
+        return NULL;
+    }
+
+    function GetDivisionById($did){
+        $r = QUERY("SELECT * FROM `division` WHERE id = ".$did);
+
+        if(count($r) > 0)
+            return $r[0];
+
+        return NULL;       
+    }
+
+    function GetTeamsByDivision($did){
+        $r = QUERY("SELECT * FROM `team` WHERE did = ".$did);
+
+        if(count($r) > 0)
+            return $r;
+
+        return NULL;       
     }
 
     function RandomHash() {

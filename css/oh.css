@@ -26,6 +26,10 @@ body {
   border-radius: 6px;
 }
 
+.hidden {
+  display: none;
+}
+
       /* Custom container */
       .container {
         margin: 0 auto;

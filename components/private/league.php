@@ -14,8 +14,8 @@
 	</table>
 	<div style="text-align: right;"><a class="btn btn-info" href="#">View Game</a></div>
 </div>
-
-<h1>Premier Division <small> <a class="btn btn-h1 btn-primary" href="">Other divisions</a></small></h1>
+<?php $division = GetDivisionById($_SESSION['did']); ?>
+<h1><?=$division->name?> <small> <a class="btn btn-h1 btn-primary" href="">Other divisions</a></small></h1>
 <table class="table">
 	<tr>
 		<th>#</th>
@@ -28,114 +28,26 @@
 		<th>-</th>
 		<th>Points</th>
 	</tr>
-	<tr class="success">
-		<td>1</td>
-		<td>HC Luxor Eeklo</td>
-		<td>8</td>
-		<td>8</td>
-		<td>0</td>
-		<td>0</td>
-		<td>220</td>
-		<td>98</td>
-		<td>16</td>
-	</tr>
-	<tr class="info">
-		<td>2</td>
-		<td>Izegem</td>
-		<td>8</td>
-		<td>7</td>
-		<td>1</td>
-		<td>0</td>
-		<td>200</td>
-		<td>130</td>
-		<td>15</td>
-	</tr>
-	<tr>
-		<td>3</td>
-		<td>Roeselare</td>
-		<td>8</td>
-		<td>7</td>
-		<td>1</td>
-		<td>0</td>
-		<td>185</td>
-		<td>140</td>
-		<td>15</td>
-	</tr>
-	<tr>
-		<td>4</td>
-		<td>Uilenspiegel</td>
-		<td>8</td>
-		<td>6</td>
-		<td>0</td>
-		<td>2</td>
-		<td>170</td>
-		<td>110</td>
-		<td>12</td>
-	</tr>
-	<tr>
-		<td>5</td>
-		<td>Olva Brugge</td>
-		<td>8</td>
-		<td>5</td>
-		<td>0</td>
-		<td>3</td>
-		<td>150</td>
-		<td>130</td>
-		<td>10</td>
-	</tr>
-	<tr>
-		<td>6</td>
-		<td>HC Aalst</td>
-		<td>8</td>
-		<td>4</td>
-		<td>0</td>
-		<td>4</td>
-		<td>134</td>
-		<td>136</td>
-		<td>8</td>
-	</tr>
-	<tr>
-		<td>7</td>
-		<td>Denderbelle</td>
-		<td>8</td>
-		<td>2</td>
-		<td>1</td>
-		<td>5</td>
-		<td>130</td>
-		<td>143</td>
-		<td>5</td>
-	</tr>
-	<tr>
-		<td>8</td>
-		<td>HKW Lokeren</td>
-		<td>8</td>
-		<td>2</td>
-		<td>1</td>
-		<td>5</td>
-		<td>126</td>
-		<td>146</td>
-		<td>5</td>
-	</tr>
-	<tr class="warning">
-		<td>9</td>
-		<td>Evergem</td>
-		<td>8</td>
-		<td>2</td>
-		<td>0</td>
-		<td>6</td>
-		<td>120</td>
-		<td>154</td>
-		<td>4</td>
-	</tr>
-	<tr class="error">
-		<td>10</td>
-		<td>Temse</td>
-		<td>8</td>
-		<td>0</td>
-		<td>0</td>
-		<td>8</td>
-		<td>98</td>
-		<td>165</td>
-		<td>0</td>
-	</tr>
+	<?php 
+		$divteams = GetTeamsByDivision($_SESSION['did']);
+
+		$c = 0;
+		$classes = array("success", "info", "", "", "", "", "", "", "warning", "error");
+		foreach ($divteams as $team) {
+			?>
+			<tr <?php if($classes[$i] != "") echo('class="'.$classes[$i].'"') ?>>
+				<td><?=($c+1)?></td>
+				<td><?=$team->name?></td>
+				<td><?=$team->played?></td>
+				<td><?=$team->won?></td>
+				<td><?=$team->lost?></td>
+				<td><?=$team->draw?></td>
+				<td><?=$team->plus?></td>
+				<td><?=$team->minus?></td>
+				<td><?=$team->points?></td>
+			</tr>
+			<?php
+			$c++;
+		}
+	?>
 </table>

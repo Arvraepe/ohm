@@ -3,7 +3,7 @@
 	<div class="span3 boxed">
 			<h4>Base</h4>
 			<?php
-				$players = QUERY("SELECT * FROM `player` WHERE id in (SELECT pid FROM `team_player` WHERE uid = 1) ORDER BY birthdate ASC LIMIT 7");
+				$players = QUERY("SELECT * FROM `player` WHERE tid = ".$_SESSION['tid']." ORDER BY birthdate ASC LIMIT 7");
 				  
 				  foreach ($players as $player) {
 			?>

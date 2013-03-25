@@ -1,7 +1,7 @@
 
 <?php
 
-  $players = QUERY("SELECT * FROM `player` WHERE id in (SELECT pid FROM `team_player` WHERE uid = ".$_SESSION['uid'].") ORDER BY birthdate ASC");
+  $players = QUERY("SELECT * FROM `player` WHERE tid = ".$_SESSION['tid']." ORDER BY birthdate ASC");
 
 if($players != NULL){
 
