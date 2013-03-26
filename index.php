@@ -64,7 +64,7 @@
                   <li class="<?php if($page == "home") echo("active"); ?>"><a href="index.php?p=home">Home</a></li>
                   <li class="<?php if($page == "tour") echo("active"); ?>"><a href="index.php?p=tour">Tour</a></li>
                   <li class="<?php if($page == "login") echo("active"); ?>"><a href="index.php?p=login">Login</a></li>
-                  <li class="<?php if($page == "register") echo("active"); ?>"><a href="index.php?p=register">Register</a></li>
+                  <li class="<?php if($page == "register" || $page == "registred") echo("active"); ?>"><a href="index.php?p=register">Register</a></li>
                 <?php } ?>
               </ul>
             </div>
@@ -84,6 +84,7 @@
           // Public - no login needed
           case "login"      : include("components/public/login.php"); break;
           case "register"   : include("components/public/registration.php"); break;
+          case "registred" : include("components/public/registred.php"); break;
           // Error - 404 page not found
           default           : include("components/error/404.php"); break;
         }

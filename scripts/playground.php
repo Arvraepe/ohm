@@ -10,8 +10,11 @@
 	// $salary += $p->talent * 200;
 	// echo($salary);
 
-	$salt = RandomHash();
-	$password = "test";
+	// $salt = RandomHash();
+	// $password = "test";
 
-	echo("Salt: ".$salt." Password: ".md5($password.$salt));
+	// echo("Salt: ".$salt." Password: ".md5($password.$salt));
+
+	$teams = QUERY("SELECT * FROM `team` WHERE id NOT IN (SELECT tid FROM user WHERE tid is not null) ORDER BY did ASC");
+	var_dump($teams);
 ?>

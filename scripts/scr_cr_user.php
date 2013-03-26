@@ -43,28 +43,31 @@
 		// Send Mail
 		$to      = $email;
 		$subject = 'Online Handball Activation';
-		$message = 'Hello '.$username.", \n\nYou are just one click away from becoming a true handball manager. ".
-		"Please click (or copy to the address bar) the link below to activate your account!\n\n".
-		'<a href="localhost/activation/activate.php?a='.$activation.'&u='.$id.'">\n\n'
-		."Thank you and have fun,\nThe Online Handball Team";
-		$headers = 'From: handballmanager@arvraepe.org';
+		$message = "Hello <strong>".$username."</strong>, <p>You are just one click away from becoming a true handball manager. ".
+		"Please click (or copy to the address bar) the link below to activate your account!</p>".
+		"<p>Link: <a href=\"http://localhost/ohm/activation/activate.php?a=".$activation."&u=".$id."\">http://http://localhost/activation/activate.php?a=".$activation."&u=".$id."</a></p>"
+		."Thank you and have fun,<br />The Online Handball Team";
+		$headers = "Content-type: text/html\r\n"; 
+		$headers .= 'From: handballmanager@arvraepe.org';
+
 
 		mail($to, $subject, $message, $headers);
+		$_SESSION['activationid'] = $id;
 
-		// DONE Redirect to login or something
-		header("location: ../index.php?p=login");
+		header("location: ../index.php?p=registred"); // register != registred
 	} else {
 		header("location: ../index.php?p=register&e");
 	} 
 
 	function usernameAvailable($name){
-		$user = QUERY("SELECT * FROM `user` WHERE username = '".mysql_escape_string($name)."'");
+		$user = GetUserByUsername($name);
 		return $user == NULL;
 	}
 
 	function checkEmail($email){
+		$user = GetUserByEmail($email);
 		$regex = '/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/'; 
-		return preg_match($regex, $email); 
+		return $user != NULL && preg_match($regex, $email); 
 	}
 
 	function generateRandomString($length){

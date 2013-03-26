@@ -15,7 +15,7 @@
         }
 
         // Login Required for this page?
-        $public = array("home", "login", "register", "tour");
+        $public = array("home", "login", "register", "tour", "registred");
         if (!in_array($page, $public)) {
             $page_type = "private";
             // Session is needed to be set for this page ... but is it?
@@ -26,8 +26,13 @@
         } else {
             if (isset($_SESSION['uid'])){           
                 // logged in tries to access page like login or registration... not for his eyes!
-                header("location: index.php");
+                $page = "dashboard";
+            } else if (isset($_SESSION['activated']) && $page == "register") {
+                header("location: index.php?p=registred");
+            } else if (!isset($_SESSION['activated']) && $page == "register") {
+                $page = "registration";
             }
+
         }
     }
 
@@ -103,6 +108,10 @@
 
     function GetUserByUsername($username){
         return FETCHORNULL("user", "username", $username);
+    }
+
+    function GetUserByEmail($email){
+        return FETCHORNULL("user", "email", $email);
     }
 
     function GetPlayerById($pid){
