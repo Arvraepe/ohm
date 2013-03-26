@@ -43,8 +43,8 @@ if($players != NULL){
     <div class="span4 table-player">
       <table>
         <tr>
-          <td width="50%" class="table-key">Name</td>
-          <td width="50%" class="table-value"><?=$player->name?></td>
+          <td width="40%" class="table-key">Name</td>
+          <td width="60%" class="table-value"><?=$player->name?></td>
         </tr>
         <tr>
           <td class="table-key">Age</td>
@@ -107,7 +107,7 @@ if($players != NULL){
       </div>
       <div class="span4">
         <h3>Info</h3>
-        This player has a salary of <img src="img/icons/money_euro.png"><span class="label label-warning">1300</span> a month.
+        This player has a salary of <img src="img/icons/money_euro.png"><span class="label label-warning"><?=$player->salary?></span> a month.
       </div>
       <div class="span2">
         <p><a class="btn btn-warning fullwidth" href="">Put on transferlist</a></p>

@@ -50,6 +50,16 @@
         }
     }
 
+    // Only for own use
+    function FETCHORNULL($table, $field, $value){
+        $r = QUERY("SELECT * FROM `".$table."` WHERE ".$field." = '".mysql_escape_string($value)."'");
+        
+        if(count($r) > 0)
+            return $r[0];
+        
+        return NULL;
+    }
+
     function GetPlayerAge($birthday) {
         $cyear = date("Y");
         $cmonth = date("m");
@@ -87,45 +97,33 @@
         return $class;
     }
 
-    function SearchUserByUsername($username){
-        $r = QUERY("SELECT * FROM `user` WHERE username = '".mysql_escape_string($username)."'");
-        
-        if(count($r) > 0)
-            return $r[0];
-        
-        return NULL;
+    function GetUserById($uid){
+        return FETCHORNULL("user", "id", $uid);
+    }
+
+    function GetUserByUsername($username){
+        return FETCHORNULL("user", "username", $username);
+    }
+
+    function GetPlayerById($pid){
+       return FETCHORNULL("player", "id", $pid);
     }
 
     function SearchTeamById($teamid){
-        $r = QUERY("SELECT * FROM `team` WHERE id = ".$teamid);
-
-        if(count($r) > 0)
-            return $r[0];
-
-        return NULL;
+        return FETCHORNULL("team", "id", $teamid);
     }
 
     function GetDivisionById($did){
-        $r = QUERY("SELECT * FROM `division` WHERE id = ".$did);
-
-        if(count($r) > 0)
-            return $r[0];
-
-        return NULL;       
+        return FETCHORNULL("division", "id", $did);       
     }
 
     function GetTeamsByDivision($did){
-        $r = QUERY("SELECT * FROM `team` WHERE did = ".$did);
-
-        if(count($r) > 0)
-            return $r;
-
-        return NULL;       
+        return FETCHORNULL("team", "did", $did);       
     }
 
     function RandomHash() {
         $stack = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
-        $length = rand(30,40);
+        $length = 40;
 
         $str = "";
         for ($i=0; $i < $length; $i++) { 

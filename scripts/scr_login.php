@@ -6,7 +6,7 @@
 	$password = $_POST['password'];
 	$redirect = $_POST['redirect'];
 
-	$user = SearchUserByUsername(ucfirst(strtolower($username)));
+	$user = GetUserByUsername(ucfirst(strtolower($username)));
 	// Needs hashing
 	if($user != NULL && $user->password == md5($password.$user->salt)) {
 		$_SESSION['uid'] = $user->id;

@@ -110,11 +110,17 @@
 			if ($keeper == 1)
 				$keepdb = 'y';
 
+			// Starting salary
+			$salary = 550;
+		    $salary += $skills->strength + $skills->accuracy + $skills->intelligence + $skills->reflexes + $skills->teamplay + $skills->speed;
+		    $salary += $talents[$i] * 50;
+
 			$result = $db->query("INSERT INTO `player` 
 				(
 					tid,
 					name,
 					birthdate,
+					salary,
 					nationality,
 					handed,
 					keeper,
@@ -132,6 +138,7 @@
 					".$teamid.",
 					'".$names[$i]."',
 					'".$birthdate."',
+					'".$salary."',
 					'".$nat."',
 					'".$handed."',
 					'".$keepdb."',
