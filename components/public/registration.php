@@ -79,8 +79,17 @@
   }
 
   function checkEmailValidation(obj, callback) {
-    var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    callback(obj, re.test( $("#pEmail").val() ));
+     $.ajax({
+      type: "POST",
+      url: "scripts/scr_checkemail.php",
+      data: { email: $("#pEmail").val() }
+    }).done(function(msg){ 
+      if (msg == "true"){
+        callback(obj, true);
+      } else {
+        callback(obj, false);
+      }
+    }); 
   }
 
   function checkUsernameValidation(obj, callback){

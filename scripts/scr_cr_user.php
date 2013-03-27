@@ -52,11 +52,12 @@
 
 
 		mail($to, $subject, $message, $headers);
-		$_SESSION['activationid'] = $id;
+		$_SESSION['activated'] = $id;
 
 		header("location: ../index.php?p=registred"); // register != registred
 	} else {
-		header("location: ../index.php?p=register&e");
+		echo "Fout";
+		//header("location: ../index.php?p=register&e");
 	} 
 
 	function usernameAvailable($name){
@@ -67,7 +68,7 @@
 	function checkEmail($email){
 		$user = GetUserByEmail($email);
 		$regex = '/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/'; 
-		return $user != NULL && preg_match($regex, $email); 
+		return $user == NULL && preg_match($regex, $email); 
 	}
 
 	function generateRandomString($length){

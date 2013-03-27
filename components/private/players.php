@@ -21,7 +21,7 @@ if($players != NULL){
 
     // Special info? (Selected, Injured, Birthday, etc)
     // Example: <span class="label label-info img-player-info">selected</span>
-    $ornament = "";
+    $ornament = GetPlayerStatus($player);
 ?>
 <script type="text/javascript">
   function toggle(id){

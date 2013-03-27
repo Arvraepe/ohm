@@ -22,13 +22,18 @@
 			if(count($teams) > 0){
 				$pteam = $teams[0];
 				$db->query("UPDATE `user` SET activation = NULL, activation_release = NULL, tid = ".$pteam->id." WHERE id = ".$user->id);
-				// Et voila! TODO LOGIN THE USER AFTER ACTIVATION
-				echo("Successsss");
+				
+				// Setting the session vars needed
+				$user->tid = $pteam->id;
+				//var_dump($user);
+				SetSessionVars($user);
+
+				header("location: ../index.php?p=dashboard");
 			} else {
 				// Eum probleemke... geen teams meer? What to do?
 				// Possibility 1: Create new division + simulate games up until now
 				// Possibility 2: Put on waiting list for when current season is over
-				echo "no team found";
+				echo("If you are reading this, all the teams are allocated and there is a placeholder of actions here... I don't know yet what to do with this issue");
 			}
 		}
 	}else{

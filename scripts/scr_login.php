@@ -14,11 +14,7 @@
 			$_SESSION['activated'] = $user->id;
 			header("location: ../index.php?p=registred");
 		} else {
-			$_SESSION['uid'] = $user->id;
-			$_SESSION['tid'] = $user->tid;
-			$team = SearchTeamById($user->tid);
-			$_SESSION['did'] = $team->did;
-			$_SESSION['username'] = $user->username;
+			SetSessionVars($user);
 			header("location: ../index.php?p=dashboard");
 		}
 	} else {

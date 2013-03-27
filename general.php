@@ -2,15 +2,24 @@
 
     session_start();
 
+    /*
+
+
+                    Controlling the pages and making sure nobody sees things he don't want/needs to see
+
+
+    */
     // Using general in scripts need to set the $skip_page_control so 
     // general skips this possible redirect and the SQL features and functions can be used
     if(!isset($skip_page_control)) {
         // Get the Current page 
         $page = "home";
         $page_type = "public";
+
         if(isset($_GET['p'])){
             $page = $_GET['p'];
         } else if(isset($_SESSION['uid'])) {
+            // When no page is set but the user is logged in -> go to dashboard instead of home
             $page = "dashboard";
         }
 
@@ -18,24 +27,28 @@
         $public = array("home", "login", "register", "tour", "registred");
         if (!in_array($page, $public)) {
             $page_type = "private";
-            // Session is needed to be set for this page ... but is it?
-            if (!isset($_SESSION['uid'])) {
-                // Session isn't set so we need to redirect to login page
-                header("location: index.php?p=login&redirect=".$page);
-            }
-        } else {
-            if (isset($_SESSION['uid'])){           
-                // logged in tries to access page like login or registration... not for his eyes!
-                $page = "dashboard";
-            } else if (isset($_SESSION['activated']) && $page == "register") {
-                header("location: index.php?p=registred");
-            } else if (!isset($_SESSION['activated']) && $page == "register") {
-                $page = "registration";
-            }
 
+            // Session is needed to be set for this page ... but is it?
+            if (!isset($_SESSION['uid'])) header("location: index.php?p=login&redirect=".$page);
+        } else {
+            // Logged in user tries to access public page
+            if (isset($_SESSION['uid'])) header("location: index.php");
+            // Register with a running activation
+            else if ($page == "register" && isset($_SESSION['activated'])) $page = "registred";
+            // Register with no activation
+            else if ($page == "register" && !isset($_SESSION['activated'])) $page = "register";
+            // Registred without the $_SESSION var
+            else if ($page == "registred" && !isset($_SESSION['activated'])) $page = "register";
         }
     }
 
+    /*
+
+
+                        STARTING GENERAL
+
+
+    */
     $db = new mysqli("localhost", "root", "", "handball");
 
     function QUERY($sql){
@@ -56,11 +69,20 @@
     }
 
     // Only for own use
-    function FETCHORNULL($table, $field, $value){
+    function FETCH_OR_NULL($table, $field, $value){
         $r = QUERY("SELECT * FROM `".$table."` WHERE ".$field." = '".mysql_escape_string($value)."'");
         
         if(count($r) > 0)
             return $r[0];
+        
+        return NULL;
+    }
+
+    function FETCH_ALL_OR_NULL($table, $field, $value){
+        $r = QUERY("SELECT * FROM `".$table."` WHERE ".$field." = '".mysql_escape_string($value)."'");
+        
+        if(count($r) > 0)
+            return $r;
         
         return NULL;
     }
@@ -103,31 +125,58 @@
     }
 
     function GetUserById($uid){
-        return FETCHORNULL("user", "id", $uid);
+        return FETCH_OR_NULL("user", "id", $uid);
     }
 
     function GetUserByUsername($username){
-        return FETCHORNULL("user", "username", $username);
+        return FETCH_OR_NULL("user", "username", $username);
     }
 
     function GetUserByEmail($email){
-        return FETCHORNULL("user", "email", $email);
+        return FETCH_OR_NULL("user", "email", $email);
     }
 
     function GetPlayerById($pid){
-       return FETCHORNULL("player", "id", $pid);
+       return FETCH_OR_NULL("player", "id", $pid);
     }
 
-    function SearchTeamById($teamid){
-        return FETCHORNULL("team", "id", $teamid);
+    function GetTeamById($teamid){
+        return FETCH_OR_NULL("team", "id", $teamid);
     }
 
     function GetDivisionById($did){
-        return FETCHORNULL("division", "id", $did);       
+        return FETCH_OR_NULL("division", "id", $did);       
     }
 
     function GetTeamsByDivision($did){
-        return FETCHORNULL("team", "did", $did);       
+        return FETCH_ALL_OR_NULL("team", "did", $did);       
+    }
+
+    function GetStatusById($sid){
+        return FETCH_OR_NULL("player_status", "id", $sid);
+    }
+
+    function GetPlayerStatus($player){
+        if($player->status != 0){
+            $status = GetStatusById($player->status);
+            return '<div class="img-player-info label label-'.$status->class.'">'.$status->text.'</div>';
+        }
+        return "";
+
+    }
+
+
+    function RestoreSession($uid){
+        //$user = GetUserById($uid);
+    }
+
+    function SetSessionVars($user){
+        $_SESSION['uid'] = $user->id;
+        $_SESSION['tid'] = $user->tid;
+        $_SESSION['username'] = $user->username;
+
+        $team = GetTeamById($user->tid);
+        $_SESSION['did'] = $team->did;
     }
 
     function RandomHash() {

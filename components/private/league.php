@@ -14,7 +14,8 @@
 	</table>
 	<div style="text-align: right;"><a class="btn btn-info" href="#">View Game</a></div>
 </div>
-<?php $division = GetDivisionById($_SESSION['did']); ?>
+<?php 
+$division = GetDivisionById($_SESSION['did']); ?>
 <h1><?=$division->name?> <small> <a class="btn btn-h1 btn-primary" href="">Other divisions</a></small></h1>
 <table class="table">
 	<tr>
@@ -34,6 +35,7 @@
 		$c = 0;
 		$classes = array("success", "info", "", "", "", "", "", "", "warning", "error");
 		foreach ($divteams as $team) {
+			//echo("test: ".$team[0]."<br />");
 			?>
 			<tr <?php if($classes[$i] != "") echo('class="'.$classes[$i].'"') ?>>
 				<td><?=($c+1)?></td>
