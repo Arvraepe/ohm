@@ -54,17 +54,16 @@
             <div class="container">
               <ul class="nav">
                 <?php if ($page_type == "private") { ?>
-                  <li class="<?php if($page == "dashboard") echo("active"); ?>"><a href="index.php?p=dashboard">Dashboard</a></li>
-                  <li class="<?php if($page == "league") echo("active"); ?>"><a href="index.php?p=league">League</a></li>
-                  <li class="<?php if($page == "team") echo("active"); ?>"><a href="index.php?p=team">Team</a></li>
-                  <li class="<?php if($page == "players") echo("active"); ?>"><a href="index.php?p=players">Players</a></li>
-                  <li class="<?php if($page == "transfer") echo("active"); ?>"><a href="index.php?p=transfer">Transfer</a></li>
-                  <li class="<?php if($page == "finance") echo("active"); ?>"><a href="index.php?p=finance">Finance</a></li>
+                  <li class="<?=($page == "dashboard" ? "active" : "")?>"><a href="index.php?p=dashboard">Dashboard</a></li>
+                  <li class="<?=($page == "league" ? "active" : "")?>"><a href="index.php?p=league">League</a></li>
+                  <li class="<?=($page == "team" ? "active" : "")?>"><a href="index.php?p=team">Team</a></li>
+                  <li class="<?=($page == "transfer" ? "active" : "")?>"><a href="index.php?p=transfer">Transfer</a></li>
+                  <li class="<?=($page == "finance" ? "active" : "")?>"><a href="index.php?p=finance">Finance</a></li>
                 <?php } else if ($page_type == "public") { ?>
-                  <li class="<?php if($page == "home") echo("active"); ?>"><a href="index.php?p=home">Home</a></li>
-                  <li class="<?php if($page == "tour") echo("active"); ?>"><a href="index.php?p=tour">Tour</a></li>
-                  <li class="<?php if($page == "login") echo("active"); ?>"><a href="index.php?p=login">Login</a></li>
-                  <li class="<?php if($page == "register" || $page == "registred") echo("active"); ?>"><a href="index.php?p=register">Register</a></li>
+                  <li class="<?=($page == "home" ? "active" : "")?>"><a href="index.php?p=home">Home</a></li>
+                  <li class="<?=($page == "tour" ? "active" : "")?>"><a href="index.php?p=tour">Tour</a></li>
+                  <li class="<?=($page == "login" ? "active" : "")?>"><a href="index.php?p=login">Login</a></li>
+                  <li class="<?=($page == "register" || $page == "registred" ? "active" : "")?>"><a href="index.php?p=register">Register</a></li>
                 <?php } ?>
               </ul>
             </div>
@@ -98,10 +97,6 @@
       </div>
 
     </div>
-    
-    <script src="js/oh.js"></script>
-    <script src="http://code.highcharts.com/highcharts.js"></script>
-    <script src="http://code.highcharts.com/modules/exporting.js"></script>
-
   </body>
 </html>
+<?php $db->close(); ?>

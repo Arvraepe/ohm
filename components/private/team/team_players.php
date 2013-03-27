@@ -1,7 +1,7 @@
 
 <?php
 
-  $players = QUERY("SELECT * FROM `player` WHERE tid = ".$_SESSION['tid']." ORDER BY birthdate ASC");
+  $players = GetPlayersByTeam($_SESSION['tid']);
 
 if($players != NULL){
 

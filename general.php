@@ -42,6 +42,11 @@
         }
     }
 
+    function GetSubItem($default){
+        return isset($_GET['s']) ? $_GET['s'] : $default;
+    }
+
+
     /*
 
 
@@ -51,6 +56,7 @@
     */
     $db = new mysqli("localhost", "root", "", "handball");
 
+    // -------------- QUERYING HELPERS
     function QUERY($sql){
         global $db;
 
@@ -68,7 +74,24 @@
         }
     }
 
-    // Only for own use
+    function FETCH_ALL_OR_NULL_SQL($sql){
+        $r = QUERY($sql);
+
+        if(count($r) > 0)
+            return $r[0];
+        
+        return NULL;
+    }
+
+    function FETCH_OR_NULL_SQL($sql){
+        $r = QUERY($sql);
+        
+        if(count($r) > 0)
+            return $r[0];
+        
+        return NULL;    
+    }
+
     function FETCH_OR_NULL($table, $field, $value){
         $r = QUERY("SELECT * FROM `".$table."` WHERE ".$field." = '".mysql_escape_string($value)."'");
         
@@ -86,6 +109,8 @@
         
         return NULL;
     }
+
+    // -------------- END QUERYING HELPERS
 
     function GetPlayerAge($birthday) {
         $cyear = date("Y");
@@ -124,6 +149,8 @@
         return $class;
     }
 
+    // ----- PERSISTENCE GETTERS --------
+
     function GetUserById($uid){
         return FETCH_OR_NULL("user", "id", $uid);
     }
@@ -138,6 +165,10 @@
 
     function GetPlayerById($pid){
        return FETCH_OR_NULL("player", "id", $pid);
+    }
+
+    function GetPlayersByTeam($tid){
+        return FETCH_ALL_OR_NULL("player", "tid", $tid);
     }
 
     function GetTeamById($teamid){
@@ -156,6 +187,12 @@
         return FETCH_OR_NULL("player_status", "id", $sid);
     }
 
+    function GetTransactionsByTeamId($tid){
+        return FETCH_ALL_OR_NULL("transaction", "tid", $tid);
+    }
+
+    // ----- END PERSISTENCE GETTERS --------
+
     function GetPlayerStatus($player){
         if($player->status != 0){
             $status = GetStatusById($player->status);
@@ -167,6 +204,7 @@
 
 
     function RestoreSession($uid){
+        // TODO
         //$user = GetUserById($uid);
     }
 
