@@ -93,7 +93,7 @@
       <hr>
 
       <div class="footer">
-        <p>&copy; Company 2013</p>
+        <p>&copy; Arvraepe <?=date("Y")?> - <strong>OHM</strong> V0.1-<?=date("ynj")?></p>
       </div>
 
     </div>
