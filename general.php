@@ -60,7 +60,7 @@
     function QUERY($sql){
         global $db;
 
-        $result = $db->query($sql);
+        $result = $db->query($sql) or die ($db->error);
         if($result){
             while ($row = $result->fetch_object()){
                 $a[] = $row;
@@ -78,7 +78,7 @@
         $r = QUERY($sql);
 
         if(count($r) > 0)
-            return $r[0];
+            return $r;
         
         return NULL;
     }
@@ -187,8 +187,8 @@
         return FETCH_OR_NULL("player_status", "id", $sid);
     }
 
-    function GetTransactionsByTeamId($tid){
-        return FETCH_ALL_OR_NULL("transaction", "tid", $tid);
+    function GetTransactionsByTeamId($tid, $amount){
+        return FETCH_ALL_OR_NULL_SQL("SELECT * FROM `transaction` WHERE tid = ".$tid." ORDER BY `when` DESC LIMIT ".$amount);
     }
 
     // ----- END PERSISTENCE GETTERS --------
