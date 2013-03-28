@@ -188,7 +188,7 @@
     }
 
     function GetTransactionsByTeamId($tid, $amount){
-        return FETCH_ALL_OR_NULL_SQL("SELECT * FROM `transaction` WHERE tid = ".$tid." ORDER BY `when` DESC LIMIT ".$amount);
+        return FETCH_ALL_OR_NULL_SQL("SELECT * FROM `transaction` WHERE tid = ".$tid." AND completed = 'y' ORDER BY `when` DESC LIMIT ".$amount);
     }
 
     // ----- END PERSISTENCE GETTERS --------

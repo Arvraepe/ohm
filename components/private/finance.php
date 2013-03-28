@@ -8,14 +8,21 @@
       // Last column example <td style="text-align: right;"><span class="label label-important">10 Players</span></td>
       // plotting the transactions
       // First the current point
-      $categories[0] = date("Y-j-n");
+      $categories[0] = date("n/j"); //TODO: add leading zero to the n
       $data[0] = $team->assets; 
       $counter = 1;
       //$revtrans = array_reverse($transactions);
+
       foreach ($transactions as $t) {
-        $categories[$counter] = substr($t->when, 0, 10);
-        $data[$counter] = $data[$counter-1] - $t->amount;
-        $counter++;
+        $cat = str_replace("-", "/", substr(substr($t->when, 0, 10), 5));
+        $find = array_search($cat, $categories);
+        if($find > 0) {
+          $data[$find] = $data[$find] - $t->amount;
+        } else {
+          $categories[$counter] = $cat;
+          $data[$counter] = $data[$counter-1] - $t->amount;
+          $counter++;
+        }
       }
   ?>
 
@@ -25,6 +32,22 @@
 </div>
 
 <script language="javascript">
+  String.prototype.reverse = function () {
+      return this.split("").reverse().join("");
+  }
+
+  function commatize(number){
+    var number = ""+number;
+    number = number.reverse();
+    var buffer = "";
+    for (var i = 0; i < number.length; i++) {
+        if(i % 3 == 0 && i > 0){
+          buffer += ",";
+        }
+        buffer += number.charAt(i);
+    };
+    return buffer.reverse();  
+  }
   // Example Chart
   $(function () {
       var chart;
@@ -54,7 +77,7 @@
               },
               yAxis: {
                   title: {
-                      text: 'Amount x 1000 ($)'
+                      text: 'Total Asset Amount'
                   },
                   plotLines: [{
                       value: 0,
@@ -64,7 +87,7 @@
               },
               tooltip: {
                   formatter: function() {
-                          return this.y +'K $';
+                    return commatize(this.y);
                   }
               },
               legend: {
