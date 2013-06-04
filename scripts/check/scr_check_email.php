@@ -3,7 +3,7 @@
 	require("../general.php");
 	if($_POST['email'] != "" && checkEmail($_POST['email'])){
 
-		$user = QUERY("SELECT * FROM `user` WHERE email = '".mysql_escape_string($_POST['email'])."'");
+		$user = QUERY("SELECT * FROM `users` WHERE email = '".mysql_escape_string($_POST['email'])."'");
 
 		if($user == NULL)
 			echo("true");

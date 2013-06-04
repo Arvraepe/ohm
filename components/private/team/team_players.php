@@ -6,7 +6,7 @@
 if($players != NULL){
 
   foreach ($players as $player) {
-    $age = GetPlayerAge($player->birthdate);
+    $age = $player->age;
 
     $talentColor = GetTalentColorClass($player->talent);
     $experienceColor = GetExperienceColorClass($player->experience);
@@ -107,7 +107,8 @@ if($players != NULL){
       </div>
       <div class="span4">
         <h3>Info</h3>
-        This player has a salary of <img src="img/icons/money_euro.png"><span class="label label-warning"><?=$player->salary?></span> a month.
+        <p>This player has a salary of <img src="img/icons/money_euro.png"><span class="label label-warning"><?=$player->salary?></span> a month.</p>
+        <p>His birthday is on day <strong><?=$player->birthdate?></strong> of the season.
       </div>
       <div class="span2">
         <p><a class="btn btn-warning fullwidth" href="">Put on transferlist</a></p>

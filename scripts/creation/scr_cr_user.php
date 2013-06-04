@@ -7,7 +7,7 @@
  */
 
 	$skip_page_control = true;
-	require("../general.php");
+	require("../../general.php");
 
 	//STEP 1 VALIDATE THE INFO
 	$username = $_POST['pUsername'];
@@ -28,7 +28,7 @@
 
 		$activation = generateRandomString(50);
 		$salt = generateRandomString(40);
-		$db->query("INSERT INTO `user` (username, password, salt, email, activation, activation_release)
+		$db->query("INSERT INTO `users` (username, password, salt, email, activation, activation_release)
 			VALUES(
 				'".$db->real_escape_string($username)."',
 				'".md5($password1.$salt)."',

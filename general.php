@@ -56,6 +56,8 @@
     */
     $db = new mysqli("localhost", "root", "", "handball");
 
+    $ohm = FETCH_OR_NULL_SQL("SELECT * FROM `ohm`");
+
     // -------------- QUERYING HELPERS
     function QUERY($sql){
         global $db;
@@ -149,26 +151,26 @@
         return $class;
     }
 
-    // ----- PERSISTENCE GETTERS --------
+    // ----- Get Functions --------
 
     function GetUserById($uid){
-        return FETCH_OR_NULL("user", "id", $uid);
+        return FETCH_OR_NULL("users", "id", $uid);
     }
 
     function GetUserByUsername($username){
-        return FETCH_OR_NULL("user", "username", $username);
+        return FETCH_OR_NULL("users", "username", $username);
     }
 
     function GetUserByEmail($email){
-        return FETCH_OR_NULL("user", "email", $email);
+        return FETCH_OR_NULL("users", "email", $email);
     }
 
     function GetPlayerById($pid){
-       return FETCH_OR_NULL("player", "id", $pid);
+       return FETCH_OR_NULL("players", "id", $pid);
     }
 
     function GetPlayersByTeam($tid){
-        return FETCH_ALL_OR_NULL("player", "tid", $tid);
+        return FETCH_ALL_OR_NULL("players", "tid", $tid);
     }
 
     function GetTeamById($teamid){
@@ -176,7 +178,7 @@
     }
 
     function GetDivisionById($did){
-        return FETCH_OR_NULL("division", "id", $did);       
+        return FETCH_OR_NULL("divisions", "id", $did);       
     }
 
     function GetTeamsByDivision($did){
@@ -188,10 +190,22 @@
     }
 
     function GetTransactionsByTeamId($tid, $amount){
-        return FETCH_ALL_OR_NULL_SQL("SELECT * FROM `transaction` WHERE tid = ".$tid." AND completed = 'y' ORDER BY `when` DESC LIMIT ".$amount);
+        return FETCH_ALL_OR_NULL_SQL("SELECT * FROM `transactions` WHERE tid = ".$tid." AND completed = 'y' ORDER BY `when` DESC LIMIT ".$amount);
     }
 
-    // ----- END PERSISTENCE GETTERS --------
+    function GetStaffOnList(){
+        return FETCH_ALL_OR_NULL_SQL("SELECT id, tid, name, salary, experience, typename as type FROM `staff`, `staff_type` WHERE staff.type = staff_type.typeid AND staff.tid is null");
+    }
+
+    function GetStaffByTeamId($tid){
+        return FETCH_ALL_OR_NULL_SQL("SELECT id, tid, name, salary, experience, typename as type FROM `staff`, `staff_type` WHERE staff.type = staff_type.typeid AND staff.tid = ".$tid);
+    }
+
+    function GetStaffById($sid){
+        return FETCH_OR_NULL("staff", "id", $sid);
+    }
+
+    // ----- END Get Functions --------
 
     function GetPlayerStatus($player){
         if($player->status != 0){
@@ -228,6 +242,70 @@
         }
 
         return $str;
+    }
+
+    function GetRandomName($amount){
+
+        $lastnames = QUERY("SELECT * FROM `lastnames`");
+        $firstnames = QUERY("SELECT * FROM `firstnames`");
+
+        for ($i=0; $i < $amount; $i++) { 
+            $lrid = rand(0, count($lastnames));
+            $frid = rand(0, count($firstnames));
+            $names[$i] = $firstnames[$frid]->firstname." ".$lastnames[$lrid]->lastname;
+        }
+
+        return $names;
+
+    }
+
+    /*
+            
+            Creation functions
+
+    */
+    function CreateStaff($name, $experience, $salary, $type){
+        global $db;
+        $db->query("INSERT INTO `staff` (name, salary, experience, type) VALUES (
+                '".$name."',
+                ".$salary.",
+                ".$experience.",
+                ".$type."
+            )");
+        return $db->insert_id;
+    }
+
+    function CreateTransaction($amount, $message, $when, $extra, $class){
+        $db->query("INSERT INTO `transactions` (when, amount, completed, message, extra, class) VALUES (
+                '".$when."',
+                ".$amount.",
+                'n',
+                '".$message."',
+                '".$extra."',
+                '".$class."'
+            )");
+        return true;
+    }
+
+    function HireStaff($staffid, $teamid){
+        global $db;
+        $staff = GetStaffById($staffid);
+        if($staff != NULL && $staff->tid == NULL){
+            $db->query("UPDATE `staff` SET tid = ".$teamid." WHERE id = ".$staffid) or die ($db->error);
+            return true;
+        } 
+
+        return false;
+    }
+
+    function FireStaff($staffid, $teamid){
+        global $db;
+        $staff = GetStaffById($staffid);
+        if($staff != NULL && $staff->tid == $teamid){
+            // Fire the staff member
+            $db->query("UPDATE `staff` SET tid = NULL WHERE id = ".$staffid);
+            // Add the transaction fire fee.
+        }
     }
 
 ?>

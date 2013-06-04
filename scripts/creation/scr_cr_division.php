@@ -19,19 +19,8 @@
 		}
 	}
 
-	function GetBirthDate($age){
-		$year = date("Y") - $age;
-		$month = rand(1,12);
-		$day = rand(1,28);
-
-		if  (	$month > date("m") 
-				|| ($month == date("m") && $day > date("d"))
-			){
-
-			$year -= 1;
-		}
-
-		return $year."-".$month."-".$day;
+	function GetBirthDate(){
+		return rand(1,63);
 	}
 
 	function GetRandomName($amount){
@@ -98,7 +87,7 @@
 				$keeper = 1;
 
 			$skills = GetRandomStats($ages[$i], $talents[$i], $keeper); 
-			$birthdate = GetBirthDate($ages[$i]);
+			$birthdate = GetBirthDate();
 			$in = rand(0, count($nationalities)-1);
 			$nat = $nationalities[$in];
 			
@@ -115,11 +104,12 @@
 		    $salary += $skills->strength + $skills->accuracy + $skills->intelligence + $skills->reflexes + $skills->teamplay + $skills->speed;
 		    $salary += $talents[$i] * 50;
 
-			$result = $db->query("INSERT INTO `player` 
+			$result = $db->query("INSERT INTO `players` 
 				(
 					tid,
 					name,
 					birthdate,
+					age,
 					salary,
 					nationality,
 					handed,
@@ -138,6 +128,7 @@
 					".$teamid.",
 					'".$names[$i]."',
 					'".$birthdate."',
+					".$ages[$i].",
 					'".$salary."',
 					'".$nat."',
 					'".$handed."',
@@ -172,7 +163,7 @@
 	function create_division(){
 		global $db;
 
-		$divs = QUERY("SELECT count(*) as amount FROM `division`");
+		$divs = QUERY("SELECT count(*) as amount FROM `divisions`");
 		$divname = "Division ".($divs[0]->amount+1);
 
 		$db->query("INSERT INTO `division` (name) VALUES ('".$divname."')");

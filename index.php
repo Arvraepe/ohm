@@ -34,6 +34,8 @@
           Online Handball 
           <?php if ($page_type == "private") { ?>
           <small style="vertical-align: text-bottom;" class="pull-right">
+             <strong>Season: </strong><?=$ohm->season?> <strong>Day: </strong><?=$ohm->day?> 
+             &nbsp;&nbsp;&nbsp;
             <div class="btn-group">
               <a class="btn btn-info dropdown-toggle" data-toggle="dropdown" href="#">
                 <i class="icon-user icon-white"></i>
@@ -80,6 +82,7 @@
           case "finance"    : include("components/private/finance.php"); break;
           case "league"     : include("components/private/league.php"); break;
           case "team"       : include("components/private/team.php"); break;
+          case "transfer"   : include("components/private/transfer.php"); break;
           // Public - no login needed
           case "login"      : include("components/public/login.php"); break;
           case "register"   : include("components/public/registration.php"); break;

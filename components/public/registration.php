@@ -81,7 +81,7 @@
   function checkEmailValidation(obj, callback) {
      $.ajax({
       type: "POST",
-      url: "scripts/scr_checkemail.php",
+      url: "scripts/check/scr_check_email.php",
       data: { email: $("#pEmail").val() }
     }).done(function(msg){ 
       if (msg == "true"){
@@ -95,7 +95,7 @@
   function checkUsernameValidation(obj, callback){
     $.ajax({
       type: "POST",
-      url: "scripts/scr_checkusername.php",
+      url: "scripts/check/scr_check_username.php",
       data: { username: $("#pUsername").val() }
     }).done(function(msg){ 
       if (msg == "true"){
@@ -108,7 +108,7 @@
 
 </script>
 <h1>Registration</h1>
-<form class="form-horizontal well" id="pRegistrationForm" method="POST" action="scripts/scr_cr_user.php">
+<form class="form-horizontal well" id="pRegistrationForm" method="POST" action="scripts/creation/scr_cr_user.php">
 
   <div id="pRegistrationError" <?php if(!isset($_GET['e'])) echo('style="display: none;"'); ?>class="alert alert-error">Your info did <strong>not</strong> pass the validation. Have you read and accepted the <strong>terms of agreement?</strong></div>
 

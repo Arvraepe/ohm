@@ -1,7 +1,7 @@
 <div class="span4 boxed">
 	<h4>Base</h4>
 	<?php
-		$players = QUERY("SELECT * FROM `player` WHERE tid = ".$_SESSION['tid']." ORDER BY birthdate ASC LIMIT 7");
+		$players = QUERY("SELECT * FROM `players` WHERE tid = ".$_SESSION['tid']." ORDER BY birthdate ASC LIMIT 7");
 		  
 		  foreach ($players as $player) {
 	?>
